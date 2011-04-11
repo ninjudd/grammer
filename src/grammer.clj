@@ -130,7 +130,7 @@
 
 (defn growl-notifications []
   (let [results (get-notifications)]
-    (doseq [notification (:notifications results)]
+    (doseq [notification (rseq (:notifications results))]
       (if-let [handler (ns-resolve 'grammer (symbol (:category notification)))]
         (handler notification results)
         (println "unknown notification category" (:category notification))))
