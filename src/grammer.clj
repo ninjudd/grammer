@@ -48,9 +48,11 @@
 
 (defn http [method resource params access-token]
   (let [url      (str "https://www.yammer.com/api/v1/" resource ".json")
-        params   (signed-params access-token method url params)
-        response ((http-method method) url {:query-params params})]
-    (keywordize-keys (json/parse-string (:body response)))))
+        params   (signed-params access-token method url params)]
+    (when-let [response (try ((http-method method) url {:query-params params})
+                             (catch java.net.UnknownHostException e
+                               (prn e)))]
+      (keywordize-keys (json/parse-string (:body response))))))
 
 (defn authorize []
   (let [request-token (oauth/request-token consumer)
@@ -84,7 +86,7 @@
           (update-in [:references]       by-id)))))
 
 (defn objects [notification results]
-  (for [{:keys [id type]} (:objects notification)]
+  (for [{:keys [id type]} (reverse (:objects notification))]
     (get-in results [:objects (keyword type) id])))
 
 (defn reference [id results]
@@ -130,7 +132,7 @@
 
 (defn growl-notifications []
   (let [results (get-notifications)]
-    (doseq [notification (rseq (:notifications results))]
+    (doseq [notification (reverse (:notifications results))]
       (if-let [handler (ns-resolve 'grammer (symbol (:category notification)))]
         (handler notification results)
         (println "unknown notification category" (:category notification))))
@@ -140,6 +142,6 @@
   (when-not @access-token
     (authorize))
   (loop []
-    (let [interval (:requested_poll_interval (growl-notifications))]
+    (let [interval (or (:requested_poll_interval (growl-notifications)) 15)]
       (Thread/sleep (* interval 1000)))
     (recur)))
