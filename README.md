@@ -16,3 +16,16 @@ Then you can start grammer with:
     ./grammer
 
 Or just download the latest executable [here](http://cloud.github.com/downloads/ninjudd/grammer/grammer).
+
+## Auto-start
+
+1. Copy both the `grammer` executable and `install/grammer-launch` into `/usr/local/bin`
+
+2. Copy `install/com.ninjudd.grammer.plist` into `~/Library/LaunchAgents`
+
+3. `launchctl load ~/Library/LaunchAgents/com.ninjudd.grammer.plist`
+
+## Debugging
+
+This is alpha software at this point, but it works for me. If you have any problems, open
+`Console.app` and search for `grammer`, then open an issue with the relevant information.
