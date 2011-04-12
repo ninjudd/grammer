@@ -15,4 +15,4 @@ Then you can start grammer with:
 
     ./grammer
 
-Or just download the latest executable from http://cloud.github.com/downloads/ninjudd/grammer/grammer.
+Or just download the latest executable [here](http://cloud.github.com/downloads/ninjudd/grammer/grammer).
