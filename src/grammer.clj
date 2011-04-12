@@ -50,8 +50,7 @@
   (let [url      (str "https://www.yammer.com/api/v1/" resource ".json")
         params   (signed-params access-token method url params)]
     (when-let [response (try ((http-method method) url {:query-params params})
-                             (catch java.net.UnknownHostException e
-                               (prn e)))]
+                             (catch java.net.UnknownHostException e))]
       (keywordize-keys (json/parse-string (:body response))))))
 
 (defn authorize []
