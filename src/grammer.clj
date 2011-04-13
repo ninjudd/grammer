@@ -69,8 +69,8 @@
 (defn notify [title message & [icon]]
   (sh "growlnotify"
       "-s" (str title)
-      "-m" (str message)
-      "--image" (str icon)))
+      "--image" (str icon)
+      :in message))
 
 (defn get-notifications []
   (let [max-id  (slurp (cursor-file))
