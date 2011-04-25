@@ -75,7 +75,7 @@
 
 (defn get-notifications []
   (let [max-id  (slurp (cursor-file))
-        opts    (into {:mark_seen true} (if (empty? max-id) {:count 5} {:newer_than max-id}))
+        opts    (into {:mark_seen true} (if (empty? max-id) {:count 10} {:newer_than max-id}))
         results (http :GET "notifications" opts @access-token)]
     (when-let [max-id (-> results :notifications first :id)]
       (spit (cursor-file) max-id))
