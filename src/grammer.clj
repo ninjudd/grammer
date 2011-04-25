@@ -67,9 +67,10 @@
         (recur)))))
 
 (defn notify [title message & [icon]]
-  (sh "growlnotify"
-      "-s" (str title)
+  (sh "growlnotify" "-s"
+      "-n" "grammer"
       "--image" (str icon)
+      "-t" (str title)
       :in message))
 
 (defn get-notifications []
